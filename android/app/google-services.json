@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1092547324418",
+    "project_id": "flutter-with-asmae",
+    "storage_bucket": "flutter-with-asmae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092547324418:android:e638f7249183e2ea6e151b",
+        "android_client_info": {
+          "package_name": "com.example.flutter_controle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXueu4HSHGtQH1gJLAeeH6-aeTm_aEuoU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
