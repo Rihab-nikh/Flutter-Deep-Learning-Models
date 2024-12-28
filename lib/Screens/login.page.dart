@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logging in...')),
       );
-      Navigator.pushNamed(context, "/home");
+      Navigator.pushReplacementNamed(context, 'home');
     } on FirebaseAuthException catch (e) {
       String message;
       switch (e.code) {

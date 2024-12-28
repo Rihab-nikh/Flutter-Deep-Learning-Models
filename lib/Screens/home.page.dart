@@ -43,12 +43,12 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    user?.email ?? "User",
+                    user?.displayName ?? "User",
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
-                  const Text(
-                    "yahya.fekrane@emsi-edu.ma",
-                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  Text(
+                    user?.email ?? "Email",
+                    style: const TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ]),
               ),

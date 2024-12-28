@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -35,17 +34,6 @@ class _RegisterPageState extends State<RegisterPage> {
         return;
       }
 
-      // Check if username is unique
-      final QuerySnapshot result = await FirebaseFirestore.instance
-          .collection('users')
-          .where('username', isEqualTo: _usernameController.text.trim())
-          .get();
-      final List<DocumentSnapshot> documents = result.docs;
-      if (documents.isNotEmpty) {
-        showToast("Username is already taken.");
-        return;
-      }
-
       // Create user with email and password
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -53,14 +41,8 @@ class _RegisterPageState extends State<RegisterPage> {
         password: _passwordController.text.trim(),
       );
 
-      // Save user data to Firestore
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set({
-        'username': _usernameController.text.trim(),
-        'email': _emailController.text.trim(),
-      });
+      // Update user profile with username
+      await userCredential.user!.updateDisplayName(_usernameController.text.trim());
 
       showToast("Registration successful!");
       Navigator.pushReplacementNamed(context, "/home");
@@ -81,12 +63,6 @@ class _RegisterPageState extends State<RegisterPage> {
           break;
       }
       showToast(message);
-    } on FirebaseException catch (e) {
-      if (e.code == 'permission-denied') {
-        showToast("Permission denied. Please check your Firestore rules.");
-      } else {
-        showToast("Error: ${e.toString()}");
-      }
     } catch (e) {
       showToast("Error: ${e.toString()}");
     } finally {
