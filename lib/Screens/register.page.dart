@@ -16,6 +16,17 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    // Redirect authenticated users to the home page
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, 'home');
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _usernameController.dispose();
     _emailController.dispose();
@@ -45,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await userCredential.user!.updateDisplayName(_usernameController.text.trim());
 
       showToast("Registration successful!");
-      Navigator.pushReplacementNamed(context, "/home");
+      Navigator.pushReplacementNamed(context, 'home');
     } on FirebaseAuthException catch (e) {
       String message;
       switch (e.code) {

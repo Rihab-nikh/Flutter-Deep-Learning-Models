@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+goutimport 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'Screens/home.page.dart';
 import 'Screens/login.page.dart';
 import 'Screens/register.page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,11 +35,35 @@ class MyApp extends StatelessWidget {
         ),
       ),
       title: 'Data Science App',
-      initialRoute: 'login',
+      initialRoute: '/',
       routes: {
+        '/': (context) => const AuthWrapper(),
         'login': (context) => const LoginPage(),
         'register': (context) => const RegisterPage(),
         'home': (context) => const HomePage(),
+      },
+    );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasData) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacementNamed('home');
+          });
+          return const SizedBox.shrink();
+        } else {
+          return const LoginPage();
+        }
       },
     );
   }
